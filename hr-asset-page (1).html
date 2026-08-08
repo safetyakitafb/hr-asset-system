@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Asset Information</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1A2233;
+    --paper:#F3F1EA;
+    --card:#FFFFFF;
+    --navy:#1B2A4A;
+    --steel:#3D5A80;
+    --amber:#C77D2E;
+    --green:#3E7C5A;
+    --red:#B2432F;
+    --line:#D8D4C8;
+    --mono:'IBM Plex Mono', monospace;
+    --sans:'IBM Plex Sans Thai', 'IBM Plex Mono', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(27,42,74,0.035) 0px, rgba(27,42,74,0.035) 1px, transparent 1px, transparent 28px);
+    font-family:var(--sans);
+    color:var(--ink);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:28px 16px 60px;
+  }
+  .sheet{
+    width:100%;
+    max-width:460px;
+  }
+
+  /* ---- Top strip: org identity ---- */
+  .org-strip{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 4px 14px;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.08em;
+    color:var(--steel);
+    text-transform:uppercase;
+  }
+  .org-strip .dot{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--green);
+    display:inline-block;
+    margin-right:6px;
+  }
+
+  /* ---- Card ---- */
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:2px;
+    box-shadow:0 1px 0 rgba(27,34,51,0.04);
+    position:relative;
+    overflow:hidden;
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    top:0;left:0;right:0;
+    height:6px;
+    background:var(--navy);
+  }
+
+  .head{
+    padding:34px 26px 22px;
+    border-bottom:1px dashed var(--line);
+  }
+  .head .eyebrow{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.14em;
+    color:var(--steel);
+    text-transform:uppercase;
+    margin:0 0 10px;
+  }
+  .head .assetno{
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:34px;
+    letter-spacing:0.01em;
+    color:var(--navy);
+    margin:0 0 12px;
+    word-break:break-all;
+    line-height:1.1;
+  }
+  .head .itemname{
+    font-size:19px;
+    font-weight:600;
+    margin:0;
+    color:var(--ink);
+  }
+
+  .status-row{
+    padding:16px 26px;
+    border-bottom:1px dashed var(--line);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#FAF9F5;
+  }
+  .status-pill{
+    font-family:var(--mono);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.04em;
+    padding:5px 12px;
+    border-radius:20px;
+    text-transform:uppercase;
+  }
+  .status-pill.in-use{ background:#E7F1EA; color:var(--green); border:1px solid #BFDBC9; }
+  .status-pill.in-repair{ background:#FBEFE3; color:var(--amber); border:1px solid #EED2AE; }
+  .status-pill.retired{ background:#F5E7E4; color:var(--red); border:1px solid #E2C0B9; }
+  .status-row .updated{
+    margin-left:auto;
+    font-family:var(--mono);
+    font-size:10.5px;
+    color:#9A9689;
+  }
+
+  .rows{
+    padding:8px 26px 6px;
+  }
+  .row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    padding:13px 0;
+    border-bottom:1px solid #EFEDE5;
+    gap:16px;
+  }
+  .row:last-child{ border-bottom:none; }
+  .row .label{
+    font-size:13px;
+    color:#7A7668;
+    flex-shrink:0;
+    min-width:96px;
+  }
+  .row .value{
+    font-size:14.5px;
+    font-weight:500;
+    color:var(--ink);
+    text-align:right;
+  }
+  .row .value.mono{
+    font-family:var(--mono);
+    font-size:13.5px;
+  }
+
+  .warning{
+    margin:22px 26px 0;
+    border:1px solid #E2C0B9;
+    background:#FBF3F1;
+    border-radius:2px;
+    padding:14px 16px;
+    display:flex;
+    gap:10px;
+  }
+  .warning .mark{
+    font-size:16px;
+    line-height:1.4;
+  }
+  .warning .txt{
+    font-size:12.5px;
+    line-height:1.55;
+    color:#7A3B2E;
+  }
+  .warning .txt b{
+    display:block;
+    font-size:13px;
+    color:var(--red);
+    margin-bottom:2px;
+  }
+
+  .foot{
+    padding:22px 26px 28px;
+    text-align:center;
+  }
+  .foot .co{
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:0.1em;
+    color:#B1AC9C;
+    text-transform:uppercase;
+  }
+
+  .stub{
+    text-align:center;
+    margin-top:14px;
+    font-family:var(--mono);
+    font-size:10.5px;
+    color:#A79F8C;
+    letter-spacing:0.05em;
+  }
+
+  .notfound{
+    padding:60px 26px;
+    text-align:center;
+  }
+  .notfound .big{ font-size:40px; margin-bottom:10px; }
+  .notfound h2{ font-size:17px; margin:0 0 8px; color:var(--navy); }
+  .notfound p{ font-size:13px; color:#7A7668; line-height:1.6; margin:0; }
+
+  @media (max-width:380px){
+    .head .assetno{ font-size:27px; }
+  }
+</style>
+</head>
+<body>
+  <div class="sheet">
+    <div class="org-strip">
+      <span><span class="dot"></span>HR Department · Asset Registry</span>
+      <span id="today"></span>
+    </div>
+
+    <div class="card" id="card"></div>
+
+    <div class="stub" id="stub"></div>
+  </div>
+
+<script>
+/* -----------------------------------------------------------
+   ตั้งค่า API
+   นำ Web app URL ที่ได้จากการ Deploy Google Apps Script
+   มาวางแทนที่ข้อความด้านล่างนี้
+------------------------------------------------------------ */
+const API_URL = "https://script.google.com/macros/s/AKfycbzF9Eve_7kP91ppdM_etDgrQ2KizlrmMpPqp9fMAVhqqd5-kygHrBIV01d6LwUqEcJO/exec";
+
+function getAssetId(){
+  const params = new URLSearchParams(window.location.search);
+  return (params.get('id') || 'HR-CHAIR-001').trim().toUpperCase();
+}
+
+/* หมายเหตุ: sheet ปัจจุบันมีคอลัมน์ id, item, department, location,
+   status, statusLabel, owner, note, updated — ตรงกับฟิลด์ที่ใช้แสดงผลด้านล่าง
+   ถ้าวันหลังเพิ่มคอลัมน์ใหม่ในชีต (เช่น category, purchaseDate)
+   แค่เพิ่ม <div class="row">...</div> เข้าไปในฟังก์ชัน renderCard ได้เลย */
+
+function renderLoading(){
+  document.getElementById('card').innerHTML = `
+    <div class="notfound">
+      <div class="big">⏳</div>
+      <h2>กำลังโหลดข้อมูล...</h2>
+      <p>กรุณารอสักครู่</p>
+    </div>`;
+}
+
+function renderCard(id, data){
+  const card = document.getElementById('card');
+  const stub = document.getElementById('stub');
+
+  if(!data || data.error){
+    card.innerHTML = `
+      <div class="notfound">
+        <div class="big">🔎</div>
+        <h2>ไม่พบข้อมูลทรัพย์สิน "${id}"</h2>
+        <p>กรุณาตรวจสอบ Asset No. อีกครั้ง หรือติดต่อฝ่าย HR<br>เพื่อยืนยันเลขทรัพย์สินที่ถูกต้อง</p>
+      </div>`;
+    stub.textContent = '';
+    return;
+  }
+
+  card.innerHTML = `
+    <div class="head">
+      <p class="eyebrow">Asset No.</p>
+      <p class="assetno">${id}</p>
+      <p class="itemname">${data.item}</p>
+    </div>
+
+    <div class="status-row">
+      <span class="status-pill ${data.status}">${data.statusLabel}</span>
+      <span class="updated">อัปเดตล่าสุด ${data.updated}</span>
+    </div>
+
+    <div class="rows">
+      <div class="row"><span class="label">หน่วยงาน</span><span class="value">${data.department}</span></div>
+      <div class="row"><span class="label">สถานที่ประจำ</span><span class="value">${data.location}</span></div>
+      <div class="row"><span class="label">ผู้รับผิดชอบ</span><span class="value">${data.owner}</span></div>
+      <div class="row"><span class="label">หมายเหตุ</span><span class="value">${data.note}</span></div>
+    </div>
+
+    <div class="warning">
+      <div class="mark">⚠️</div>
+      <div class="txt">
+        <b>PROPERTY OF HR DEPARTMENT</b>
+        ห้ามเคลื่อนย้ายหรือยืมโดยไม่ได้รับอนุญาตจากฝ่าย HR
+      </div>
+    </div>
+
+    <div class="foot">
+      <div class="co">HR Asset Management System</div>
+    </div>
+  `;
+  stub.textContent = `scanned · ${id} · ${window.location.hostname || 'local file'}`;
+}
+
+document.getElementById('today').textContent = new Date().toLocaleDateString('th-TH', {day:'numeric', month:'short', year:'numeric'});
+/* ตัวอย่าง Asset No. ที่ใช้กับระบบนี้ เช่น HR-CHAIR-001, HR-TABLE-001 */
+const assetId = getAssetId();
+renderLoading();
+
+fetch(`${API_URL}?id=${encodeURIComponent(assetId)}`)
+  .then(res => res.json())
+  .then(data => renderCard(assetId, data))
+  .catch(() => {
+    document.getElementById('card').innerHTML = `
+      <div class="notfound">
+        <div class="big">⚠️</div>
+        <h2>เชื่อมต่อข้อมูลไม่สำเร็จ</h2>
+        <p>กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต หรือแจ้งฝ่าย HR<br>หากปัญหายังคงอยู่</p>
+      </div>`;
+  });
+</script>
+</body>
+</html>
